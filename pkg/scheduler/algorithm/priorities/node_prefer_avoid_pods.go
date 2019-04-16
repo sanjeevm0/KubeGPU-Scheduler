@@ -20,19 +20,27 @@ import (
 	"fmt"
 
 	"k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	v1helper "k8s.io/kubernetes/pkg/apis/core/v1/helper"
-	priorityutil "k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/priorities/util"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
+	schedulerapi "k8s.io/kubernetes/pkg/scheduler/api"
+	schedulernodeinfo "k8s.io/kubernetes/pkg/scheduler/nodeinfo"
 )
 
-func CalculateNodePreferAvoidPodsPriorityMap(pod *v1.Pod, meta interface{}, nodeInfo *schedulercache.NodeInfo) (schedulerapi.HostPriority, error) {
+// CalculateNodePreferAvoidPodsPriorityMap priorities nodes according to the node annotation
+// "scheduler.alpha.kubernetes.io/preferAvoidPods".
+func CalculateNodePreferAvoidPodsPriorityMap(pod *v1.Pod, meta interface{}, nodeInfo *schedulernodeinfo.NodeInfo) (schedulerapi.HostPriority, error) {
 	node := nodeInfo.Node()
 	if node == nil {
 		return schedulerapi.HostPriority{}, fmt.Errorf("node not found")
 	}
+	var controllerRef *metav1.OwnerReference
+	if priorityMeta, ok := meta.(*priorityMetadata); ok {
+		controllerRef = priorityMeta.controllerRef
+	} else {
+		// We couldn't parse metadata - fallback to the podspec.
+		controllerRef = metav1.GetControllerOf(pod)
+	}
 
-	controllerRef := priorityutil.GetControllerRef(pod)
 	if controllerRef != nil {
 		// Ignore pods that are owned by other controller than ReplicationController
 		// or ReplicaSet.
