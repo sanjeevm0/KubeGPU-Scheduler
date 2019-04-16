@@ -26,9 +26,9 @@ import (
 	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
 	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/factory"
 	"k8s.io/kubernetes/pkg/features"
-	"k8s.io/kubernetes/pkg/scheduler/algorithm/predicates"
-	"k8s.io/kubernetes/pkg/scheduler/algorithm/priorities"
-	"k8s.io/kubernetes/pkg/scheduler/factory"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/factory"
 )
 
 const (

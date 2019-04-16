@@ -28,12 +28,12 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
 	restclient "k8s.io/client-go/rest"
-	"k8s.io/kubernetes/cmd/kube-scheduler/app"
-	kubeschedulerconfig "k8s.io/kubernetes/cmd/kube-scheduler/app/config"
-	"k8s.io/kubernetes/cmd/kube-scheduler/app/options"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/cmd/app"
+	kubeschedulerconfig "github.com/Microsoft/KubeGPU/kube-scheduler/cmd/app/config"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/cmd/app/options"
 
 	// import DefaultProvider
-	_ "k8s.io/kubernetes/pkg/scheduler/algorithmprovider/defaults"
+	_ "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithmprovider/defaults"
 )
 
 // TearDownFunc is to be called to tear down a test server.

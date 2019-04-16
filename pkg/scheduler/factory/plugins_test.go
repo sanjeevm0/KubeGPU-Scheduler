@@ -22,8 +22,8 @@ import (
 	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
 
 	"github.com/stretchr/testify/assert"
-	"k8s.io/kubernetes/pkg/scheduler/algorithm/priorities"
-	"k8s.io/kubernetes/pkg/scheduler/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
 )
 
 func TestAlgorithmNameValidation(t *testing.T) {
