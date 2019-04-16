@@ -26,6 +26,15 @@ import (
 
 	"github.com/golang/glog"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api/validation"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/core"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/volumebinder"
 	"k8s.io/api/core/v1"
 	"k8s.io/api/policy/v1beta1"
 	"k8s.io/apimachinery/pkg/api/errors"
@@ -54,15 +63,6 @@ import (
 	"k8s.io/kubernetes/pkg/apis/core/helper"
 	"k8s.io/kubernetes/pkg/features"
 	kubeletapis "k8s.io/kubernetes/pkg/kubelet/apis"
-	"k8s.io/kubernetes/plugin/pkg/scheduler"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/predicates"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/api/validation"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/core"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/util"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/volumebinder"
 )
 
 const (
@@ -945,6 +945,7 @@ func (f *configFactory) CreateFromKeys(predicateKeys, priorityKeys sets.String, 
 		Binder:              f.getBinder(extenders),
 		PodConditionUpdater: &podConditionUpdater{f.client},
 		PodPreemptor:        &podPreemptor{f.client},
+		Client:              f.client,
 		WaitForCacheSync: func() bool {
 			return cache.WaitForCacheSync(f.StopEverything, f.scheduledPodsHasSynced)
 		},

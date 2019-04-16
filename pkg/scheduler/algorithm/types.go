@@ -17,12 +17,12 @@ limitations under the License.
 package algorithm
 
 import (
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
 	apps "k8s.io/api/apps/v1beta1"
 	"k8s.io/api/core/v1"
 	extensions "k8s.io/api/extensions/v1beta1"
 	"k8s.io/apimachinery/pkg/labels"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
 )
 
 // FitPredicate is a function that indicates if a pod fits into an existing node.

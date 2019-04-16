@@ -18,15 +18,20 @@ package main
 
 import (
 	goflag "flag"
+	"io/ioutil"
 	"os"
+	"path"
+
+	"github.com/golang/glog"
 
 	"github.com/spf13/pflag"
 
-	utilflag "k8s.io/apiserver/pkg/util/flag"
-	"k8s.io/apiserver/pkg/util/logs"
+	"github.com/Microsoft/KubeGPU/device-scheduler/device"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/cmd/app"
+	utilflag "k8s.io/component-base/cli/flag"
+	"k8s.io/component-base/logs"
 	_ "k8s.io/kubernetes/pkg/client/metrics/prometheus" // for client metric registration
 	_ "k8s.io/kubernetes/pkg/version/prometheus"        // for version metric registration
-	"k8s.io/kubernetes/plugin/cmd/kube-scheduler/app"
 )
 
 func main() {
@@ -40,6 +45,18 @@ func main() {
 	// utilflag.InitFlags()
 	logs.InitLogs()
 	defer logs.FlushLogs()
+
+	// add the device schedulers
+	var deviceSchedulerPlugins []string
+	pluginPath := "/schedulerplugins"
+	devPlugins, err := ioutil.ReadDir(pluginPath)
+	if err != nil {
+		glog.Errorf("Cannot read plugins - skipping")
+	}
+	for _, pluginFile := range devPlugins {
+		deviceSchedulerPlugins = append(deviceSchedulerPlugins, path.Join(pluginPath, pluginFile.Name()))
+	}
+	device.DeviceScheduler.AddDevicesSchedulerFromPlugins(deviceSchedulerPlugins)
 
 	if err := command.Execute(); err != nil {
 		os.Exit(1)

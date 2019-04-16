@@ -17,10 +17,9 @@ limitations under the License.
 package factory
 
 import (
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
 	"testing"
-
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/api"
 )
 
 func TestAlgorithmNameValidation(t *testing.T) {

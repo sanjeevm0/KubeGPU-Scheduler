@@ -25,6 +25,13 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/Microsoft/KubeGPU/device-scheduler/device"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
+	"github.com/Microsoft/KubeGPU/kubeinterface"
 	"k8s.io/api/core/v1"
 	policy "k8s.io/api/policy/v1beta1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -32,14 +39,9 @@ import (
 	"k8s.io/apimachinery/pkg/util/errors"
 	utiltrace "k8s.io/apiserver/pkg/util/trace"
 	"k8s.io/client-go/util/workqueue"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/predicates"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/util"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/volumebinder"
 	"github.com/golang/glog"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/volumebinder"
 )
 
 type FailedPredicateMap map[string][]algorithm.PredicateFailureReason
@@ -103,6 +105,25 @@ type genericScheduler struct {
 	volumeBinder      *volumebinder.VolumeBinder
 }
 
+// allocate onto device - rerun scheduling to set allocatefrom
+func (g *genericScheduler) allocateDevices(pod *v1.Pod, node *schedulercache.NodeInfo) error {
+	glog.V(4).Infof("Allocating devices for pod %s", pod.ObjectMeta.Name)
+	podInfo, nodeInfo, err := schedulercache.GetPodAndNode(pod, node, true)
+	if err != nil {
+		glog.Errorf("GetPodAndNode encouters error %v", err)
+		return err
+	}
+	err = device.DeviceScheduler.PodAllocate(podInfo, nodeInfo) // fill allocatefrom field
+	if err != nil {
+		glog.Errorf("PodAllocation encounters error %v", err)
+		return err
+	}
+	// convert to pod annotations
+	podInfo.NodeName = node.Node().ObjectMeta.Name
+	kubeinterface.PodInfoToAnnotation(&pod.ObjectMeta, podInfo)
+	return nil
+}
+
 // Schedule tries to schedule the given pod to one of node in the node list.
 // If it succeeds, it will return the name of the node.
 // If it fails, it will return a Fiterror error with reasons.
@@ -142,7 +163,8 @@ func (g *genericScheduler) Schedule(pod *v1.Pod, nodeLister algorithm.NodeLister
 
 	// When only one node after predicate, just use it.
 	if len(filteredNodes) == 1 {
-		return filteredNodes[0].Name, nil
+		err := g.allocateDevices(pod, g.cachedNodeInfoMap[filteredNodes[0].Name])
+		return filteredNodes[0].Name, err
 	}
 
 	metaPrioritiesInterface := g.priorityMetaProducer(pod, g.cachedNodeInfoMap)
@@ -152,7 +174,17 @@ func (g *genericScheduler) Schedule(pod *v1.Pod, nodeLister algorithm.NodeLister
 	}
 
 	trace.Step("Selecting host")
-	return g.selectHost(priorityList)
+	suggestedHost, err := g.selectHost(priorityList)
+	if err != nil {
+		return suggestedHost, err
+	}
+
+	err = g.allocateDevices(pod, g.cachedNodeInfoMap[suggestedHost])
+	if err != nil {
+		return suggestedHost, err
+	}
+
+	return suggestedHost, nil
 }
 
 // Prioritizers returns a slice containing all the scheduler's priority

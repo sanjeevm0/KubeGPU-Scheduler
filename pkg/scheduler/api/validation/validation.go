@@ -19,8 +19,8 @@ package validation
 import (
 	"fmt"
 
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
 )
 
 // ValidatePolicy checks for errors in the Config

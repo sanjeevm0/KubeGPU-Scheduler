@@ -19,9 +19,9 @@ package algorithm
 import (
 	"testing"
 
-	"k8s.io/api/core/v1"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
+	"k8s.io/kubernetes/pkg/api/v1"
 )
 
 // EmptyMetadataProducer should returns a no-op MetadataProducer type.

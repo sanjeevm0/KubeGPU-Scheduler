@@ -20,6 +20,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/core"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/metrics"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
+	"github.com/Microsoft/KubeGPU/kubeinterface"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -29,16 +37,9 @@ import (
 	corelisters "k8s.io/client-go/listers/core/v1"
 	"k8s.io/client-go/tools/record"
 	"k8s.io/kubernetes/pkg/features"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/predicates"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/core"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/metrics"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/util"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/volumebinder"
 	"github.com/golang/glog"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/volumebinder"
 )
 
 // Binder knows how to write a binding.
@@ -115,6 +116,9 @@ type Config struct {
 	// PodPreemptor is used to evict pods and update pod annotations.
 	PodPreemptor PodPreemptor
 
+	// Kubeclient
+	Client clientset.Interface
+
 	// NextPod should be a function that blocks until the next pod
 	// is available. We don't use a channel for this, because scheduling
 	// a pod may take some amount of time and we don't want pods to get
@@ -188,7 +192,7 @@ func (sched *Scheduler) Config() *Config {
 func (sched *Scheduler) schedule(pod *v1.Pod) (string, error) {
 	host, err := sched.config.Algorithm.Schedule(pod, sched.config.NodeLister)
 	if err != nil {
-		glog.V(1).Infof("Failed to schedule pod: %v/%v", pod.Namespace, pod.Name)
+		glog.V(1).Infof("Failed to schedule pod: %v/%v, error: %v", pod.Namespace, pod.Name, err)
 		pod = pod.DeepCopy()
 		sched.config.Error(pod, err)
 		sched.config.Recorder.Eventf(pod, v1.EventTypeWarning, "FailedScheduling", "%v", err)
@@ -400,11 +404,16 @@ func (sched *Scheduler) assume(assumed *v1.Pod, host string) error {
 // handle binding metrics internally.
 func (sched *Scheduler) bind(assumed *v1.Pod, b *v1.Binding) error {
 	bindingStart := time.Now()
-	// If binding succeeded then PodScheduled condition will be updated in apiserver so that
-	// it's atomic with setting host.
-	err := sched.config.Binder.Bind(b)
-	if err := sched.config.SchedulerCache.FinishBinding(assumed); err != nil {
-		glog.Errorf("scheduler cache FinishBinding failed: %v", err)
+	// prior to binding update the pod annotations with information on device requests being used and allocation information
+	_, err := kubeinterface.UpdatePodMetadata(sched.config.Client.CoreV1(), assumed)
+	if err == nil {
+		// If binding succeeded then PodScheduled condition will be updated in apiserver so that
+		// it's atomic with setting host.
+		err = sched.config.Binder.Bind(b)
+		err = sched.config.SchedulerCache.FinishBinding(assumed)
+		if err != nil {
+			glog.Errorf("scheduler cache FinishBinding failed: %v", err)
+		}
 	}
 	if err != nil {
 		glog.V(1).Infof("Failed to bind pod: %v/%v", assumed.Namespace, assumed.Name)

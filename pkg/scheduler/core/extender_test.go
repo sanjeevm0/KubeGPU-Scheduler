@@ -21,13 +21,13 @@ import (
 	"testing"
 	"time"
 
-	"k8s.io/api/core/v1"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
+	schedulertesting "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/testing"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/wait"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
-	schedulertesting "k8s.io/kubernetes/plugin/pkg/scheduler/testing"
+	"k8s.io/kubernetes/pkg/api/v1"
 )
 
 type fitPredicate func(pod *v1.Pod, node *v1.Node) (bool, error)
@@ -183,8 +183,6 @@ func (f *FakeExtender) IsBinder() bool {
 	return true
 }
 
-var _ algorithm.SchedulerExtender = &FakeExtender{}
-
 func TestGenericSchedulerWithExtenders(t *testing.T) {
 	tests := []struct {
 		name                 string
@@ -315,9 +313,8 @@ func TestGenericSchedulerWithExtenders(t *testing.T) {
 		for _, name := range test.nodes {
 			cache.AddNode(&v1.Node{ObjectMeta: metav1.ObjectMeta{Name: name}})
 		}
-		queue := NewSchedulingQueue()
 		scheduler := NewGenericScheduler(
-			cache, nil, queue, test.predicates, algorithm.EmptyPredicateMetadataProducer, test.prioritizers, algorithm.EmptyMetadataProducer, extenders, nil)
+			cache, nil, test.predicates, algorithm.EmptyMetadataProducer, test.prioritizers, algorithm.EmptyMetadataProducer, extenders)
 		podIgnored := &v1.Pod{}
 		machine, err := scheduler.Schedule(podIgnored, schedulertesting.FakeNodeLister(makeNodeList(test.nodes)))
 		if test.expectsErr {

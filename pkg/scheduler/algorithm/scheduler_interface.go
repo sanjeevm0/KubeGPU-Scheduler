@@ -17,9 +17,9 @@ limitations under the License.
 package algorithm
 
 import (
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
 	"k8s.io/api/core/v1"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
 )
 
 // SchedulerExtender is an interface for external processes to influence scheduling

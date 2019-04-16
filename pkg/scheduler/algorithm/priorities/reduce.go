@@ -17,10 +17,10 @@ limitations under the License.
 package priorities
 
 import (
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
 	"k8s.io/api/core/v1"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
 )
 
 // NormalizeReduce generates a PriorityReduceFunction that can normalize the result

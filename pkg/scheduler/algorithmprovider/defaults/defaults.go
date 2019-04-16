@@ -20,12 +20,12 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/core"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/factory"
 	"k8s.io/kubernetes/pkg/features"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/predicates"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/priorities"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/core"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/factory"
 
 	"github.com/golang/glog"
 )
@@ -79,6 +79,10 @@ func init() {
 	factory.RegisterFitPredicate("HostName", predicates.PodFitsHost)
 	// Fit is determined by node selector query.
 	factory.RegisterFitPredicate("MatchNodeSelector", predicates.PodMatchNodeSelector)
+	// Register device predicates
+	factory.RegisterFitPredicate("PodFitsDevices", predicates.PodFitsDevices)
+	// insert key, so that it gets used -- alternately, could insert into defaultPredicates() instead
+	factory.InsertPredicateKeyToAlgorithmProviderMap("PodFitsDevices")
 
 	// Use equivalence class to speed up heavy predicates phase.
 	factory.RegisterGetEquivalencePodFunction(
@@ -214,6 +218,7 @@ func registerAlgorithmProvider(predSet, priSet sets.String) {
 		copyAndReplace(priSet, "LeastRequestedPriority", "MostRequestedPriority"))
 }
 
+// this function registers and returns set of names, so the functions get used
 func defaultPriorities() sets.String {
 	return sets.NewString(
 		// spreads pods by minimizing the number of pods (belonging to the same service or replication controller) on the same node.
@@ -246,13 +251,17 @@ func defaultPriorities() sets.String {
 
 		// Set this weight large enough to override all other priority functions.
 		// TODO: Figure out a better way to do this, maybe at same time as fixing #24720.
-		factory.RegisterPriorityFunction2("NodePreferAvoidPodsPriority", priorities.CalculateNodePreferAvoidPodsPriorityMap, nil, 10000),
+		//factory.RegisterPriorityFunction2("NodePreferAvoidPodsPriority", priorities.CalculateNodePreferAvoidPodsPriorityMap, nil, 10000),
+		factory.RegisterPriorityFunction2("NodePreferAvoidPodsPriority", priorities.CalculateNodePreferAvoidPodsPriorityMap, nil, 1),
 
 		// Prioritizes nodes that have labels matching NodeAffinity
 		factory.RegisterPriorityFunction2("NodeAffinityPriority", priorities.CalculateNodeAffinityPriorityMap, priorities.CalculateNodeAffinityPriorityReduce, 1),
 
 		// Prioritizes nodes that marked with taint which pod can tolerate.
 		factory.RegisterPriorityFunction2("TaintTolerationPriority", priorities.ComputeTaintTolerationPriorityMap, priorities.ComputeTaintTolerationPriorityReduce, 1),
+
+		// device priority -- use this to pack devices such as GPUs
+		factory.RegisterPriorityFunction2("DevicePriority", priorities.PodDevicePriority, nil, 1000),
 	)
 }
 

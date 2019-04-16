@@ -21,12 +21,12 @@ import (
 
 	"github.com/golang/glog"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	schedutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	schedutil "k8s.io/kubernetes/plugin/pkg/scheduler/util"
 )
 
 // FindLabelsInSet gets as many key/value pairs as possible out of a label set.

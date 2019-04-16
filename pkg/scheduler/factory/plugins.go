@@ -23,14 +23,14 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
 	"k8s.io/apimachinery/pkg/util/sets"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/predicates"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/priorities"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/volumebinder"
 	"github.com/golang/glog"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/volumebinder"
 )
 
 // PluginFactoryArgs are passed to all plugin factory functions.
@@ -108,6 +108,7 @@ type AlgorithmProviderConfig struct {
 // RegisterFitPredicate registers a fit predicate with the algorithm
 // registry. Returns the name with which the predicate was registered.
 func RegisterFitPredicate(name string, predicate algorithm.FitPredicate) string {
+	glog.V(3).Infof("Register fit predicate %s", name)
 	return RegisterFitPredicateFactory(name, func(PluginFactoryArgs) algorithm.FitPredicate { return predicate })
 }
 

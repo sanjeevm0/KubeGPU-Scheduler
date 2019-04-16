@@ -20,10 +20,10 @@ import (
 	"hash/fnv"
 	"sync"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/util/sets"
 	hashutil "k8s.io/kubernetes/pkg/util/hash"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
 
 	"github.com/golang/glog"
 	"github.com/golang/groupcache/lru"

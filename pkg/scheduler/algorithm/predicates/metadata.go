@@ -20,11 +20,11 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
+	schedutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/labels"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
-	schedutil "k8s.io/kubernetes/plugin/pkg/scheduler/util"
 
 	"github.com/golang/glog"
 )

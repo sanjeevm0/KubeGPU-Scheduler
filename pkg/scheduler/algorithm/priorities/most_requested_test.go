@@ -20,11 +20,11 @@ import (
 	"reflect"
 	"testing"
 
-	"k8s.io/api/core/v1"
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
+	"k8s.io/kubernetes/pkg/api/v1"
 )
 
 func TestMostRequested(t *testing.T) {
@@ -45,16 +45,16 @@ func TestMostRequested(t *testing.T) {
 			{
 				Resources: v1.ResourceRequirements{
 					Requests: v1.ResourceList{
-						v1.ResourceCPU:    resource.MustParse("1000m"),
-						v1.ResourceMemory: resource.MustParse("0"),
+						"cpu":    resource.MustParse("1000m"),
+						"memory": resource.MustParse("0"),
 					},
 				},
 			},
 			{
 				Resources: v1.ResourceRequirements{
 					Requests: v1.ResourceList{
-						v1.ResourceCPU:    resource.MustParse("2000m"),
-						v1.ResourceMemory: resource.MustParse("0"),
+						"cpu":    resource.MustParse("2000m"),
+						"memory": resource.MustParse("0"),
 					},
 				},
 			},
@@ -68,16 +68,16 @@ func TestMostRequested(t *testing.T) {
 			{
 				Resources: v1.ResourceRequirements{
 					Requests: v1.ResourceList{
-						v1.ResourceCPU:    resource.MustParse("1000m"),
-						v1.ResourceMemory: resource.MustParse("2000"),
+						"cpu":    resource.MustParse("1000m"),
+						"memory": resource.MustParse("2000"),
 					},
 				},
 			},
 			{
 				Resources: v1.ResourceRequirements{
 					Requests: v1.ResourceList{
-						v1.ResourceCPU:    resource.MustParse("2000m"),
-						v1.ResourceMemory: resource.MustParse("3000"),
+						"cpu":    resource.MustParse("2000m"),
+						"memory": resource.MustParse("3000"),
 					},
 				},
 			},
@@ -89,16 +89,16 @@ func TestMostRequested(t *testing.T) {
 			{
 				Resources: v1.ResourceRequirements{
 					Requests: v1.ResourceList{
-						v1.ResourceCPU:    resource.MustParse("2000m"),
-						v1.ResourceMemory: resource.MustParse("4000"),
+						"cpu":    resource.MustParse("2000m"),
+						"memory": resource.MustParse("4000"),
 					},
 				},
 			},
 			{
 				Resources: v1.ResourceRequirements{
 					Requests: v1.ResourceList{
-						v1.ResourceCPU:    resource.MustParse("3000m"),
-						v1.ResourceMemory: resource.MustParse("5000"),
+						"cpu":    resource.MustParse("3000m"),
+						"memory": resource.MustParse("5000"),
 					},
 				},
 			},
@@ -210,7 +210,7 @@ func TestMostRequested(t *testing.T) {
 
 	for _, test := range tests {
 		nodeNameToInfo := schedulercache.CreateNodeNameToInfoMap(test.pods, test.nodes)
-		list, err := priorityFunction(MostRequestedPriorityMap, nil, nil)(test.pod, nodeNameToInfo, test.nodes)
+		list, err := priorityFunction(MostRequestedPriorityMap, nil)(test.pod, nodeNameToInfo, test.nodes)
 		if err != nil {
 			t.Errorf("unexpected error: %v", err)
 		}

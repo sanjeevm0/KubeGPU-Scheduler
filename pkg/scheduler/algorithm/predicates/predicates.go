@@ -23,6 +23,10 @@ import (
 	"strconv"
 	"sync"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+	priorityutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities/util"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/schedulercache"
+	schedutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
 	"k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -39,13 +43,9 @@ import (
 	"k8s.io/kubernetes/pkg/features"
 	kubeletapis "k8s.io/kubernetes/pkg/kubelet/apis"
 	volumeutil "k8s.io/kubernetes/pkg/volume/util"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithm"
-	priorityutil "k8s.io/kubernetes/plugin/pkg/scheduler/algorithm/priorities/util"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/schedulercache"
-	schedutil "k8s.io/kubernetes/plugin/pkg/scheduler/util"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/volumebinder"
 	"github.com/golang/glog"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/volumebinder"
 )
 
 const (

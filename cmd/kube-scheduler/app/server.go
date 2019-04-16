@@ -30,6 +30,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithmprovider"
+	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	latestschedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api/latest"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -60,12 +64,8 @@ import (
 	"k8s.io/kubernetes/pkg/util/configz"
 	"k8s.io/kubernetes/pkg/version"
 	"k8s.io/kubernetes/pkg/version/verflag"
-	"k8s.io/kubernetes/plugin/pkg/scheduler"
-	"k8s.io/kubernetes/plugin/pkg/scheduler/algorithmprovider"
-	schedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api"
-	latestschedulerapi "k8s.io/kubernetes/plugin/pkg/scheduler/api/latest"
 
-	"k8s.io/kubernetes/plugin/pkg/scheduler/factory"
+	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/factory"
 
 	"github.com/golang/glog"
 	"github.com/spf13/cobra"
