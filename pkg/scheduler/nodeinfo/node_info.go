@@ -24,10 +24,13 @@ import (
 
 	"k8s.io/klog"
 
+	"github.com/Microsoft/KubeGPU/device-scheduler/device"
+	priorityutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities/util"
+	"github.com/Microsoft/KubeGPU/kubeinterface"
+	extypes "github.com/Microsoft/KubeGPU/types"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	v1helper "k8s.io/kubernetes/pkg/apis/core/v1/helper"
-	priorityutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities/util"
 )
 
 var (
@@ -46,7 +49,8 @@ type ImageStateSummary struct {
 // NodeInfo is node level aggregated information.
 type NodeInfo struct {
 	// Overall node information.
-	node *v1.Node
+	node   *v1.Node
+	nodeEx *extypes.NodeInfo
 
 	pods             []*v1.Pod
 	podsWithAffinity []*v1.Pod
@@ -263,6 +267,7 @@ func (r *Resource) SetMaxResource(rl v1.ResourceList) {
 // the returned object.
 func NewNodeInfo(pods ...*v1.Pod) *NodeInfo {
 	ni := &NodeInfo{
+		nodeEx:              extypes.NewNodeInfo(),
 		requestedResource:   &Resource{},
 		nonzeroRequest:      &Resource{},
 		allocatableResource: &Resource{},
@@ -434,6 +439,7 @@ func (n *NodeInfo) SetGeneration(newGeneration int64) {
 func (n *NodeInfo) Clone() *NodeInfo {
 	clone := &NodeInfo{
 		node:                    n.node,
+		nodeEx:                  n.nodeEx.Clone(),
 		requestedResource:       n.requestedResource.Clone(),
 		nonzeroRequest:          n.nonzeroRequest.Clone(),
 		allocatableResource:     n.allocatableResource.Clone(),
@@ -516,6 +522,13 @@ func (n *NodeInfo) AddPod(pod *v1.Pod) {
 	// Consume ports when pods added.
 	n.UpdateUsedPorts(pod, true)
 
+	// consume device resources
+	err := TakePodDeviceResources(pod, n)
+	if err != nil {
+		panic(fmt.Sprintf("Pod Info annotations are not correct and cannot be parsed %+v", pod))
+	}
+	klog.V(5).Infof("NodeInfo Exteded status = %v", n.nodeEx)
+
 	n.generation = nextGeneration()
 }
 
@@ -567,6 +580,12 @@ func (n *NodeInfo) RemovePod(pod *v1.Pod) error {
 			// Release ports when remove Pods.
 			n.UpdateUsedPorts(pod, false)
 
+			// return device resources
+			err := ReturnPodDeviceResources(pod, n)
+			if err != nil {
+				return err
+			}
+
 			n.generation = nextGeneration()
 
 			return nil
@@ -607,6 +626,13 @@ func (n *NodeInfo) UpdateUsedPorts(pod *v1.Pod, add bool) {
 // SetNode sets the overall node information.
 func (n *NodeInfo) SetNode(node *v1.Node) error {
 	n.node = node
+	// extract annotations from node info
+	exNodeInfo, err := kubeinterface.AnnotationToNodeInfo(&node.ObjectMeta, n.nodeEx)
+	if err != nil {
+		return err
+	}
+	n.nodeEx = exNodeInfo
+	device.DeviceScheduler.AddNode(node.ObjectMeta.Name, exNodeInfo)
 
 	n.allocatableResource = NewResource(node.Status.Allocatable)
 
@@ -635,7 +661,9 @@ func (n *NodeInfo) RemoveNode(node *v1.Node) error {
 	// this is because notifications about pods are delivered in a different watch,
 	// and thus can potentially be observed later, even though they happened before
 	// node removal. This is handled correctly in cache.go file.
+	device.DeviceScheduler.RemoveNode(node.ObjectMeta.Name)
 	n.node = nil
+	n.nodeEx = nil
 	n.allocatableResource = &Resource{}
 	n.taints, n.taintsErr = nil, nil
 	n.memoryPressureCondition = v1.ConditionUnknown
