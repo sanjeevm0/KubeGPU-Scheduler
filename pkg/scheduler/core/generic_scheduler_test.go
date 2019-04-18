@@ -583,12 +583,15 @@ func makeNode(node string, milliCPU, memory int64) *v1.Node {
 		ObjectMeta: metav1.ObjectMeta{Name: node},
 		Status: v1.NodeStatus{
 			Capacity: v1.ResourceList{
-				"cpu":    *resource.NewMilliQuantity(milliCPU, resource.DecimalSI),
-				"memory": *resource.NewQuantity(memory, resource.BinarySI),
+				v1.ResourceCPU:    *resource.NewMilliQuantity(milliCPU, resource.DecimalSI),
+				v1.ResourceMemory: *resource.NewQuantity(memory, resource.BinarySI),
+				"pods":            *resource.NewQuantity(100, resource.DecimalSI),
 			},
 			Allocatable: v1.ResourceList{
-				"cpu":    *resource.NewMilliQuantity(milliCPU, resource.DecimalSI),
-				"memory": *resource.NewQuantity(memory, resource.BinarySI),
+
+				v1.ResourceCPU:    *resource.NewMilliQuantity(milliCPU, resource.DecimalSI),
+				v1.ResourceMemory: *resource.NewQuantity(memory, resource.BinarySI),
+				"pods":            *resource.NewQuantity(100, resource.DecimalSI),
 			},
 		},
 	}
@@ -609,7 +612,7 @@ func TestHumanReadableFitError(t *testing.T) {
 			return
 		}
 	}
-	t.Errorf("Error message doesn't have all the information content: [" + error.Error() + "]")
+	t.Errorf("Error message doesn't have all the information content: [" + err.Error() + "]")
 }
 
 // The point of this test is to show that you:

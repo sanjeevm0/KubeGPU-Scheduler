@@ -87,13 +87,31 @@ func TestPriorityMetadata(t *testing.T) {
 					ImagePullPolicy: "Always",
 					Resources: v1.ResourceRequirements{
 						Requests: v1.ResourceList{
-							"cpu":    resource.MustParse("200m"),
-							"memory": resource.MustParse("2000"),
+							v1.ResourceCPU:    resource.MustParse("200m"),
+							v1.ResourceMemory: resource.MustParse("2000"),
 						},
 					},
 				},
 			},
 			Tolerations: tolerations,
+		},
+	}
+	podWithAffinityAndRequests := &v1.Pod{
+		Spec: v1.PodSpec{
+			Containers: []v1.Container{
+				{
+					Name:            "container",
+					Image:           "image",
+					ImagePullPolicy: "Always",
+					Resources: v1.ResourceRequirements{
+						Requests: v1.ResourceList{
+							v1.ResourceCPU:    resource.MustParse("200m"),
+							v1.ResourceMemory: resource.MustParse("2000"),
+						},
+					},
+				},
+			},
+			Affinity: podAffinity,
 		},
 	}
 	tests := []struct {

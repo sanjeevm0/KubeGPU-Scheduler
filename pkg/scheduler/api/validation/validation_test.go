@@ -17,6 +17,8 @@ limitations under the License.
 package validation
 
 import (
+	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
@@ -100,14 +102,6 @@ func TestValidatePolicy(t *testing.T) {
 			expected: errors.New("kubernetes.io/foo is an invalid extended resource name"),
 		},
 	}
-}
-
-func TestValidatePriorityWithNegativeWeight(t *testing.T) {
-	policy := api.Policy{Priorities: []api.PriorityPolicy{{Name: "WeightPriority", Weight: -2}}}
-	if ValidatePolicy(policy) == nil {
-		t.Errorf("Expected error about priority weight not being positive")
-	}
-}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

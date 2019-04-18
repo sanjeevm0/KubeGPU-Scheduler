@@ -20,7 +20,6 @@ import (
 	"reflect"
 	"testing"
 
-	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
@@ -79,7 +78,7 @@ func TestTaintAndToleration(t *testing.T) {
 				}}),
 			},
 			expectedList: []schedulerapi.HostPriority{
-				{Host: "nodeA", Score: 10},
+				{Host: "nodeA", Score: schedulerapi.MaxPriority},
 				{Host: "nodeB", Score: 0},
 			},
 		},
@@ -121,9 +120,9 @@ func TestTaintAndToleration(t *testing.T) {
 				}),
 			},
 			expectedList: []schedulerapi.HostPriority{
-				{Host: "nodeA", Score: 10},
-				{Host: "nodeB", Score: 10},
-				{Host: "nodeC", Score: 10},
+				{Host: "nodeA", Score: schedulerapi.MaxPriority},
+				{Host: "nodeB", Score: schedulerapi.MaxPriority},
+				{Host: "nodeC", Score: schedulerapi.MaxPriority},
 			},
 		},
 		// the count of taints on a node that are not tolerated by pod, matters.
@@ -157,7 +156,7 @@ func TestTaintAndToleration(t *testing.T) {
 				}),
 			},
 			expectedList: []schedulerapi.HostPriority{
-				{Host: "nodeA", Score: 10},
+				{Host: "nodeA", Score: schedulerapi.MaxPriority},
 				{Host: "nodeB", Score: 5},
 				{Host: "nodeC", Score: 0},
 			},
@@ -200,8 +199,8 @@ func TestTaintAndToleration(t *testing.T) {
 				}),
 			},
 			expectedList: []schedulerapi.HostPriority{
-				{Host: "nodeA", Score: 10},
-				{Host: "nodeB", Score: 10},
+				{Host: "nodeA", Score: schedulerapi.MaxPriority},
+				{Host: "nodeB", Score: schedulerapi.MaxPriority},
 				{Host: "nodeC", Score: 0},
 			},
 		},
@@ -221,7 +220,7 @@ func TestTaintAndToleration(t *testing.T) {
 				}),
 			},
 			expectedList: []schedulerapi.HostPriority{
-				{Host: "nodeA", Score: 10},
+				{Host: "nodeA", Score: schedulerapi.MaxPriority},
 				{Host: "nodeB", Score: 0},
 			},
 		},
