@@ -25,12 +25,12 @@ import (
 
 	"k8s.io/klog"
 
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
-	priorityutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities/util"
-	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
-	schedulernodeinfo "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/nodeinfo"
-	schedutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/volumebinder"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm"
+	priorityutil "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities/util"
+	schedulerapi "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
+	schedulernodeinfo "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/nodeinfo"
+	schedutil "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/util"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/volumebinder"
 	"k8s.io/api/core/v1"
 	storagev1 "k8s.io/api/storage/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -124,6 +124,8 @@ const (
 	AzureDiskVolumeFilterType = "AzureDisk"
 	// CinderVolumeFilterType defines the filter name for CinderVolumeFilter.
 	CinderVolumeFilterType = "Cinder"
+	// PodFitsDevice defines device predicate
+	PodFitsDevicePred = "PodFitsDevice"
 )
 
 // IMPORTANT NOTE for predicate developers:

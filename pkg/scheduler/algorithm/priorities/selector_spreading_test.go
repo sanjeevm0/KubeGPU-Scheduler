@@ -24,9 +24,9 @@ import (
 	apps "k8s.io/api/apps/v1"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
-	schedulernodeinfo "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/nodeinfo"
-	schedulertesting "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/testing"
+	schedulerapi "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
+	schedulernodeinfo "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/nodeinfo"
+	schedulertesting "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/testing"
 )
 
 func controllerRef(kind, name, uid string) []metav1.OwnerReference {

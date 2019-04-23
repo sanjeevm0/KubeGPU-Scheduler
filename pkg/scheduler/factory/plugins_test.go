@@ -20,8 +20,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
 )
 
 func TestAlgorithmNameValidation(t *testing.T) {

@@ -17,10 +17,10 @@ limitations under the License.
 package defaults
 
 import (
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/core"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/factory"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/core"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/factory"
 )
 
 func init() {
@@ -94,4 +94,7 @@ func init() {
 
 	// ImageLocalityPriority prioritizes nodes that have images requested by the pod present.
 	factory.RegisterPriorityFunction2(priorities.ImageLocalityPriority, priorities.ImageLocalityPriorityMap, nil, 1)
+
+	// add device priority with really high weight
+	factory.RegisterPriorityFunction2(priorities.PodDeviceScorePriority, priorities.PodDevicePriority, nil, 10000)
 }

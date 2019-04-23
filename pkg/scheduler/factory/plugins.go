@@ -23,11 +23,11 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
-	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/volumebinder"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/predicates"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities"
+	schedulerapi "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/volumebinder"
 	"k8s.io/apimachinery/pkg/util/sets"
 
 	"k8s.io/klog"

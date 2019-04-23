@@ -20,7 +20,7 @@ import (
 	"errors"
 	"fmt"
 
-	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	schedulerapi "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
 	"k8s.io/api/core/v1"
 	utilerrors "k8s.io/apimachinery/pkg/util/errors"
 	"k8s.io/apimachinery/pkg/util/sets"

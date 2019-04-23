@@ -21,7 +21,7 @@ import (
 	"k8s.io/klog"
 
 	"k8s.io/api/core/v1"
-	plugins "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/plugins/v1alpha1"
+	plugins "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/plugins/v1alpha1"
 )
 
 // StatefulMultipointExample is an example plugin that is executed at multiple extension points.

@@ -27,8 +27,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 	"k8s.io/kubernetes/pkg/features"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
-	schedulernodeinfo "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/nodeinfo"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm"
+	schedulernodeinfo "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/nodeinfo"
 
 	"k8s.io/klog"
 )

@@ -28,10 +28,10 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/client-go/util/workqueue"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
-	priorityutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities/util"
-	schedulernodeinfo "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/nodeinfo"
-	schedutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm"
+	priorityutil "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities/util"
+	schedulernodeinfo "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/nodeinfo"
+	schedutil "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/util"
 )
 
 // PredicateMetadata interface represents anything that can access a predicate metadata.

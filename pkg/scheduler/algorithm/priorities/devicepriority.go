@@ -1,9 +1,9 @@
 package priorities
 
 import (
-	"github.com/Microsoft/KubeGPU/device-scheduler/device"
-	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/nodeinfo"
+	"github.com/Microsoft/KubeDevice/device-scheduler/device"
+	schedulerapi "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/nodeinfo"
 	"github.com/golang/glog"
 	"k8s.io/api/core/v1"
 )

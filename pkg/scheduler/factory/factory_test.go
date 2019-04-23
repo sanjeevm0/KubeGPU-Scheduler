@@ -34,14 +34,14 @@ import (
 	clienttesting "k8s.io/client-go/testing"
 	"k8s.io/client-go/tools/cache"
 	apitesting "k8s.io/kubernetes/pkg/api/testing"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
-	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
-	latestschedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api/latest"
-	schedulerinternalcache "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/internal/cache"
-	internalqueue "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/internal/queue"
-	schedulernodeinfo "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/nodeinfo"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/util"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/predicates"
+	schedulerapi "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
+	latestschedulerapi "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api/latest"
+	schedulerinternalcache "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/internal/cache"
+	internalqueue "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/internal/queue"
+	schedulernodeinfo "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/nodeinfo"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/util"
 )
 
 const (

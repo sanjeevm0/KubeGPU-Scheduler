@@ -3,9 +3,9 @@ package nodeinfo
 import (
 	"fmt"
 
-	"github.com/Microsoft/KubeGPU/device-scheduler/device"
-	"github.com/Microsoft/KubeGPU/kubeinterface"
-	extypes "github.com/Microsoft/KubeGPU/types"
+	"github.com/Microsoft/KubeDevice/device-scheduler/device"
+	"github.com/Microsoft/KubeDevice/kubeinterface"
+	extypes "github.com/Microsoft/KubeDevice-API/pkg/types"
 	"github.com/golang/glog"
 
 	"k8s.io/api/core/v1"

@@ -24,9 +24,9 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	corelisters "k8s.io/client-go/listers/core/v1"
 	"k8s.io/klog"
-	schedulerinternalcache "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/internal/cache"
-	internalqueue "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/internal/queue"
-	schedulernodeinfo "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/nodeinfo"
+	schedulerinternalcache "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/internal/cache"
+	internalqueue "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/internal/queue"
+	schedulernodeinfo "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/nodeinfo"
 )
 
 // CacheComparer is an implementation of the Scheduler's cache comparer.

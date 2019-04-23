@@ -22,9 +22,9 @@ import (
 	"k8s.io/apimachinery/pkg/util/sets"
 	utilfeature "k8s.io/apiserver/pkg/util/feature"
 
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/factory"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/predicates"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/factory"
 	"k8s.io/kubernetes/pkg/features"
 )
 
@@ -53,7 +53,7 @@ func defaultPredicates() sets.String {
 		predicates.CheckNodeConditionPred,
 		predicates.PodToleratesNodeTaintsPred,
 		predicates.CheckVolumeBindingPred,
-		"PodFitsDevices",
+		predicates.PodFitsDevicePred,
 	)
 }
 
@@ -117,7 +117,7 @@ func defaultPriorities() sets.String {
 		priorities.NodeAffinityPriority,
 		priorities.TaintTolerationPriority,
 		priorities.ImageLocalityPriority,
-		"PodDevicePriority",
+		priorities.PodDeviceScorePriority,
 	)
 }
 

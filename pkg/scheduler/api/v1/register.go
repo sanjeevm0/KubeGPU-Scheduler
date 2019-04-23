@@ -17,7 +17,7 @@ limitations under the License.
 package v1
 
 import (
-	schedulerapi "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	schedulerapi "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )

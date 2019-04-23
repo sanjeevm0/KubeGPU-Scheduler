@@ -27,8 +27,8 @@ import (
 
 	"io/ioutil"
 
-	"github.com/Microsoft/KubeGPU/device-scheduler/device"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/cmd/app"
+	"github.com/Microsoft/KubeDevice/device-scheduler/device"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/cmd/app"
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/component-base/logs"
 	"k8s.io/klog"

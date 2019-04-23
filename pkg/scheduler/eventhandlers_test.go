@@ -23,9 +23,9 @@ import (
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/factory"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/factory"
 
-	fakecache "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/internal/cache/fake"
+	fakecache "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/internal/cache/fake"
 )
 
 func TestSkipPodUpdate(t *testing.T) {

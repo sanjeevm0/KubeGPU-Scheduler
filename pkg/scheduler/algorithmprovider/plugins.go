@@ -17,7 +17,7 @@ limitations under the License.
 package algorithmprovider
 
 import (
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithmprovider/defaults"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithmprovider/defaults"
 )
 
 // ApplyFeatureGates applies algorithm by feature gates.

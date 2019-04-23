@@ -21,7 +21,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/api"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/api"
 )
 
 func TestValidatePolicy(t *testing.T) {

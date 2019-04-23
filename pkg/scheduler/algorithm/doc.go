@@ -16,4 +16,4 @@ limitations under the License.
 
 // Package algorithm contains a generic Scheduler interface and several
 // implementations.
-package algorithm // import "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm"
+package algorithm // import "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm"

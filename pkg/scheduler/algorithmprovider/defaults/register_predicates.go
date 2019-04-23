@@ -17,8 +17,8 @@ limitations under the License.
 package defaults
 
 import (
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/factory"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/predicates"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/factory"
 )
 
 func init() {
@@ -128,4 +128,6 @@ func init() {
 			return predicates.NewVolumeBindingPredicate(args.VolumeBinder)
 		},
 	)
+
+	factory.RegisterFitPredicate(predicates.PodFitsDevicePred, predicates.PodFitsDevices)
 }

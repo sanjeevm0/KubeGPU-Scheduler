@@ -20,8 +20,8 @@ import (
 	"testing"
 
 	"k8s.io/apimachinery/pkg/util/sets"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/predicates"
-	"github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/predicates"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities"
 )
 
 func TestCopyAndReplace(t *testing.T) {

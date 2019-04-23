@@ -24,8 +24,8 @@ import (
 
 	"k8s.io/apimachinery/pkg/util/rand"
 	apiserveroptions "k8s.io/apiserver/pkg/server/options"
-	schedulerappconfig "github.com/Microsoft/KubeGPU/kube-scheduler/cmd/app/config"
-	kubeschedulerconfig "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/apis/config"
+	schedulerappconfig "github.com/Microsoft/KubeDevice/kube-scheduler/cmd/app/config"
+	kubeschedulerconfig "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/apis/config"
 )
 
 func TestOptions_ApplyTo(t *testing.T) {

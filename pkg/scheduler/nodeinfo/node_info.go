@@ -24,10 +24,10 @@ import (
 
 	"k8s.io/klog"
 
-	"github.com/Microsoft/KubeGPU/device-scheduler/device"
-	priorityutil "github.com/Microsoft/KubeGPU/kube-scheduler/pkg/algorithm/priorities/util"
-	"github.com/Microsoft/KubeGPU/kubeinterface"
-	extypes "github.com/Microsoft/KubeGPU/types"
+	"github.com/Microsoft/KubeDevice/device-scheduler/device"
+	priorityutil "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities/util"
+	"github.com/Microsoft/KubeDevice/kubeinterface"
+	extypes "github.com/Microsoft/KubeDevice-API/pkg/types"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	v1helper "k8s.io/kubernetes/pkg/apis/core/v1/helper"
