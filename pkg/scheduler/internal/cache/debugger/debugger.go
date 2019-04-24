@@ -20,9 +20,9 @@ import (
 	"os"
 	"os/signal"
 
-	corelisters "k8s.io/client-go/listers/core/v1"
 	internalcache "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/internal/cache"
 	internalqueue "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/internal/queue"
+	corelisters "k8s.io/client-go/listers/core/v1"
 )
 
 // CacheDebugger provides ways to check and write cache information for debugging.

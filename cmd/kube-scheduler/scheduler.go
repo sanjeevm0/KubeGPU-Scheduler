@@ -29,12 +29,18 @@ import (
 
 	"github.com/Microsoft/KubeDevice/device-scheduler/device"
 	"github.com/Microsoft/KubeDevice/kube-scheduler/cmd/app"
+	"github.com/Microsoft/KubeDevice/logger"
+
 	cliflag "k8s.io/component-base/cli/flag"
 	"k8s.io/component-base/logs"
 	"k8s.io/klog"
 	_ "k8s.io/kubernetes/pkg/util/prometheusclientgo" // load all the prometheus client-go plugins
 	_ "k8s.io/kubernetes/pkg/version/prometheus"      // for version metric registration
 )
+
+func init() {
+	logger.SetLogger()
+}
 
 func main() {
 	rand.Seed(time.Now().UnixNano())

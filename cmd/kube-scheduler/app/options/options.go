@@ -23,6 +23,11 @@ import (
 	"strconv"
 	"time"
 
+	schedulerappconfig "github.com/Microsoft/KubeDevice/kube-scheduler/cmd/app/config"
+	kubeschedulerconfig "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/apis/config"
+	kubeschedulerscheme "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/apis/config/scheme"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/apis/config/validation"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/factory"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/uuid"
@@ -41,14 +46,9 @@ import (
 	componentbaseconfig "k8s.io/component-base/config"
 	"k8s.io/klog"
 	kubeschedulerconfigv1alpha1 "k8s.io/kube-scheduler/config/v1alpha1"
-	schedulerappconfig "github.com/Microsoft/KubeDevice/kube-scheduler/cmd/app/config"
 	"k8s.io/kubernetes/pkg/api/legacyscheme"
 	"k8s.io/kubernetes/pkg/client/leaderelectionconfig"
 	"k8s.io/kubernetes/pkg/master/ports"
-	kubeschedulerconfig "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/apis/config"
-	kubeschedulerscheme "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/apis/config/scheme"
-	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/apis/config/validation"
-	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/factory"
 )
 
 // Options has all the params needed to run a Scheduler

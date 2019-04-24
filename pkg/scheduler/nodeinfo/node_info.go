@@ -24,10 +24,10 @@ import (
 
 	"k8s.io/klog"
 
+	extypes "github.com/Microsoft/KubeDevice-API/pkg/types"
 	"github.com/Microsoft/KubeDevice/device-scheduler/device"
 	priorityutil "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities/util"
 	"github.com/Microsoft/KubeDevice/kubeinterface"
-	extypes "github.com/Microsoft/KubeDevice-API/pkg/types"
 	"k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	v1helper "k8s.io/kubernetes/pkg/apis/core/v1/helper"
@@ -627,7 +627,7 @@ func (n *NodeInfo) UpdateUsedPorts(pod *v1.Pod, add bool) {
 func (n *NodeInfo) SetNode(node *v1.Node) error {
 	n.node = node
 	// extract annotations from node info
-	exNodeInfo, err := kubeinterface.AnnotationToNodeInfo(&node.ObjectMeta, n.nodeEx)
+	exNodeInfo, err := kubeinterface.KubeNodeToNodeInfo(node, n.nodeEx)
 	if err != nil {
 		return err
 	}

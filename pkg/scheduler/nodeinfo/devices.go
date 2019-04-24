@@ -6,7 +6,7 @@ import (
 	"github.com/Microsoft/KubeDevice/device-scheduler/device"
 	"github.com/Microsoft/KubeDevice/kubeinterface"
 	extypes "github.com/Microsoft/KubeDevice-API/pkg/types"
-	"github.com/golang/glog"
+	"k8s.io/klog"
 
 	"k8s.io/api/core/v1"
 )
@@ -18,14 +18,14 @@ func GetPodAndNode(pod *v1.Pod, node *NodeInfo, invalidatePodAnnotations bool) (
 	// 	if node.Node() != nil {
 	// 		//return nil, nil, fmt.Errorf("node not found")
 	// 		nodeInfoGet, err := kubeinterface.AnnotationToNodeInfo(&node.Node().ObjectMeta)
-	// 		glog.V(2).Infof("Node Info not present yet, use annotations to recompute")
+	// 		klog.V(2).Infof("Node Info not present yet, use annotations to recompute")
 	// 		if err != nil {
 	// 			return nil, nil, err
 	// 		}
 	// 		nodeInfo = nodeInfoGet
 	// 	} else {
 	// 		nodeInfo = extypes.NewNodeInfo()
-	// 		glog.V(2).Infof("Node Info not present yet, set to new struct")
+	// 		klog.V(2).Infof("Node Info not present yet, set to new struct")
 	// 	}
 	// }
 	podInfo, err := kubeinterface.KubePodInfoToPodInfo(pod, invalidatePodAnnotations)
@@ -37,7 +37,7 @@ func GetPodAndNode(pod *v1.Pod, node *NodeInfo, invalidatePodAnnotations bool) (
 		// empty string for default pods (not from scheduler)
 		if (podInfo.NodeName != nodeName) && (podInfo.NodeName != "") {
 			errStr := fmt.Sprintf("Node name is not correct - pod expects %v, but node has %v", podInfo.NodeName, nodeName)
-			glog.Errorf(errStr)
+			klog.Errorf(errStr)
 			return nil, nil, fmt.Errorf(errStr)
 		}
 	}

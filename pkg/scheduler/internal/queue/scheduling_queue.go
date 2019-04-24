@@ -34,15 +34,15 @@ import (
 
 	"k8s.io/klog"
 
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/predicates"
+	priorityutil "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities/util"
+	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/util"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	ktypes "k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/tools/cache"
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
-	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/predicates"
-	priorityutil "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/algorithm/priorities/util"
-	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/util"
 )
 
 var (

@@ -18,9 +18,9 @@ package examples
 
 import (
 	"fmt"
+
 	"k8s.io/klog"
 
-	"k8s.io/api/core/v1"
 	plugins "github.com/Microsoft/KubeDevice/kube-scheduler/pkg/plugins/v1alpha1"
 )
 
