@@ -129,5 +129,5 @@ func init() {
 		},
 	)
 
-	factory.RegisterFitPredicate(predicates.PodFitsDevicePred, predicates.PodFitsDevices)
+	factory.RegisterFitPredicate(predicates.PodFitsDevicesPred, predicates.PodFitsDevices)
 }

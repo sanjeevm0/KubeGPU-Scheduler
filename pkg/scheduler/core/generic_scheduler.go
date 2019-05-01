@@ -639,6 +639,8 @@ func podFitsOnNode(
 				err     error
 			)
 			//TODO (yastij) : compute average predicate restrictiveness to export it as Prometheus metric
+			_, ok := predicateFuncs[predicateKey]
+			klog.V(5).Infof("Checking Pod: %v PredicateKey: %v Exist: %v", pod.ObjectMeta.Name, predicateKey, ok)
 			if predicate, exist := predicateFuncs[predicateKey]; exist {
 				fit, reasons, err = predicate(pod, metaToUse, nodeInfoToUse)
 				if err != nil {
@@ -650,8 +652,8 @@ func podFitsOnNode(
 					failedPredicates = append(failedPredicates, reasons...)
 					// if alwaysCheckAllPredicates is false, short circuit all predicates when one predicate fails.
 					if !alwaysCheckAllPredicates {
-						klog.V(5).Infoln(5, "since alwaysCheckAllPredicates has not been set, the predicate "+
-							"evaluation is short circuited and there are chances "+
+						klog.V(5).Infoln("since alwaysCheckAllPredicates has not been set, the predicate " +
+							"evaluation is short circuited and there are chances " +
 							"of other predicates failing as well.")
 						break
 					}

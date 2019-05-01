@@ -3,9 +3,9 @@ package nodeinfo
 import (
 	"fmt"
 
+	extypes "github.com/Microsoft/KubeDevice-API/pkg/types"
 	"github.com/Microsoft/KubeDevice/device-scheduler/device"
 	"github.com/Microsoft/KubeDevice/kubeinterface"
-	extypes "github.com/Microsoft/KubeDevice-API/pkg/types"
 	"k8s.io/klog"
 
 	"k8s.io/api/core/v1"

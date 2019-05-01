@@ -124,8 +124,8 @@ const (
 	AzureDiskVolumeFilterType = "AzureDisk"
 	// CinderVolumeFilterType defines the filter name for CinderVolumeFilter.
 	CinderVolumeFilterType = "Cinder"
-	// PodFitsDevice defines device predicate
-	PodFitsDevicePred = "PodFitsDevice"
+	// PodFitsDevicesPred defines device predicate
+	PodFitsDevicesPred = "PodFitsDevice"
 )
 
 // IMPORTANT NOTE for predicate developers:
@@ -144,7 +144,7 @@ const (
 var (
 	predicatesOrdering = []string{CheckNodeConditionPred, CheckNodeUnschedulablePred,
 		GeneralPred, HostNamePred, PodFitsHostPortsPred,
-		MatchNodeSelectorPred, PodFitsResourcesPred, NoDiskConflictPred,
+		MatchNodeSelectorPred, PodFitsResourcesPred, PodFitsDevicesPred, NoDiskConflictPred,
 		PodToleratesNodeTaintsPred, PodToleratesNodeNoExecuteTaintsPred, CheckNodeLabelPresencePred,
 		CheckServiceAffinityPred, MaxEBSVolumeCountPred, MaxGCEPDVolumeCountPred, MaxCSIVolumeCountPred,
 		MaxAzureDiskVolumeCountPred, MaxCinderVolumeCountPred, CheckVolumeBindingPred, NoVolumeZoneConflictPred,

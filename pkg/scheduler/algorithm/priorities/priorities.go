@@ -51,6 +51,6 @@ const (
 	ImageLocalityPriority = "ImageLocalityPriority"
 	// ResourceLimitsPriority defines the nodes of prioritizer function ResourceLimitsPriority.
 	ResourceLimitsPriority = "ResourceLimitsPriority"
-	// PodDeviceScorePriority uses the device score
-	PodDeviceScorePriority = "PodDeviceScorePriority"
+	// PodDevicesScorePriority uses the device score
+	PodDevicesScorePriority = "PodDevicesScorePriority"
 )

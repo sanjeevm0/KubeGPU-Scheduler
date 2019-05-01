@@ -96,5 +96,5 @@ func init() {
 	factory.RegisterPriorityFunction2(priorities.ImageLocalityPriority, priorities.ImageLocalityPriorityMap, nil, 1)
 
 	// add device priority with really high weight
-	factory.RegisterPriorityFunction2(priorities.PodDeviceScorePriority, priorities.PodDevicePriority, nil, 10000)
+	factory.RegisterPriorityFunction2(priorities.PodDevicesScorePriority, priorities.PodDevicePriority, nil, 10000)
 }

@@ -3,11 +3,12 @@ package predicates
 import (
 	"github.com/Microsoft/KubeDevice/device-scheduler/device"
 	"github.com/Microsoft/KubeDevice/kube-scheduler/pkg/nodeinfo"
-	"k8s.io/klog"
 	"k8s.io/api/core/v1"
+	"k8s.io/klog"
 )
 
 func PodFitsDevices(pod *v1.Pod, meta PredicateMetadata, node *nodeinfo.NodeInfo) (bool, []PredicateFailureReason, error) {
+	klog.V(4).Infof("Running PodFitsDevice on %v on node %v", pod.ObjectMeta.Name, node.Node().ObjectMeta.Name)
 	podInfo, nodeInfo, err := nodeinfo.GetPodAndNode(pod, node, true)
 	if err != nil {
 		klog.Errorf("GetPodAndNode encounters error %v", err)

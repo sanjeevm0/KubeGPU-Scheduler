@@ -53,7 +53,7 @@ func defaultPredicates() sets.String {
 		predicates.CheckNodeConditionPred,
 		predicates.PodToleratesNodeTaintsPred,
 		predicates.CheckVolumeBindingPred,
-		predicates.PodFitsDevicePred,
+		predicates.PodFitsDevicesPred,
 	)
 }
 
@@ -117,7 +117,7 @@ func defaultPriorities() sets.String {
 		priorities.NodeAffinityPriority,
 		priorities.TaintTolerationPriority,
 		priorities.ImageLocalityPriority,
-		priorities.PodDeviceScorePriority,
+		priorities.PodDevicesScorePriority,
 	)
 }
 
